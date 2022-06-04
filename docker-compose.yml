@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  prometheus:
+    container_name: promtool
+    image: prom/prometheus:latest
+    volumes:
+      - ./my_rules:/my_rules
+    entrypoint: ["promtool"]
+    command: ["test", "rules", "/my_rules/test.yml"]
