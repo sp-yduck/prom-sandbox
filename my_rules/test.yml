@@ -12,7 +12,7 @@ tests:
   - interval: 1m
     # Series data.
     input_series:
-      - series: 'up{job="prometheus", instance="localhost:9090"}'
+      - series: 'up{job="prometheus", instance="localhost:9090"}' # have to use single quote because double quote is used for labels
         values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
       - series: 'up{job="node_exporter", instance="localhost:9100"}'
         values: "1+0x6 0 0 0 0 0 0 0 0" # 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0
@@ -20,6 +20,12 @@ tests:
         values: "10+10x2 30+20x5" # 10 20 30 30 50 70 90 110 130
       - series: 'go_goroutines{job="node_exporter", instance="localhost:9100"}'
         values: "10+10x7 10+30x4" # 10 20 30 40 50 60 70 80 10 40 70 100 130
+      - series: 'kube_service_spec_type{service="a", type="NodePort"}'
+        values: "1+0x14" # all 1
+      - series: 'kube_service_spec_type{service="b", type="NodePort"}'
+        values: "0+0x14" # all 0
+      - series: 'kube_service_spec_type{service="c", type="NodePort"}'
+        values: "0+0x4 1+0x9" # 0x5 1x10
 
     # Unit test for alerting rules.
     alert_rule_test:
@@ -35,6 +41,26 @@ tests:
             exp_annotations:
               summary: "Instance localhost:9090 down"
               description: "localhost:9090 of job prometheus has been down for more than 5 minutes."
+      # test 2
+      - eval_time: 10m
+        alertname: AnotherInstanceDown
+        exp_alerts:
+          - exp_labels:
+              instance: localhost:9090
+              job: prometheus
+              severity: page
+            exp_annotations:
+              summary: "Instance localhost:9090 down"
+              description: "localhost:9090 of job prometheus has been down for more than 5 minutes."
+      # test 3
+      - eval_time: 10m
+        alertname: NumberOfNodePort
+        exp_alerts:
+          - exp_labels:
+              severity: alert
+            exp_annotations:
+              summary: the number of node port is high
+
     # Unit tests for promql expressions.
     promql_expr_test:
       # Unit test 1.

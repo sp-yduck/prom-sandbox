@@ -1,6 +1,17 @@
 groups:
-  - name: instance
+  - name: NodeAlertRules
     rules:
-      - alert: InstanceDown
-        expr: up = 0 #should be "up == 0"
+      - alert: NumberOfNodePort
+        expr: count(kube_service_spec_type{type="NodePort"}) > 2
         for: 1m
+        labels:
+          severity: alert
+        annotations:
+          summary: the number of node port is high
+      - alert: NumberOfNodePort
+        expr: count(kube_service_spec_type{type="NodePort"}) > 3
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: the number of node port is too high
