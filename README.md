@@ -8,6 +8,18 @@
 
 - [alerting rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)
 
+### best prctices
+
+- [alerting](https://prometheus.io/docs/practices/alerting/)
+
+- [My Philosophy on Alerting - Rob Ewaschunk (Google)](https://docs.google.com/document/d/199PqyG3UsyXlwieHaqbGiWVa8eMWi8zzAn0YfcApr8Q/edit)
+
+### other basics
+
+- [understanding metric types](https://prometheus.io/docs/tutorials/understanding_metric_types/)
+
+- [visualizing metrics using grafana](https://prometheus.io/docs/tutorials/visualizing_metrics_using_grafana/)
+
 ## ptomtool - how to use
 
 unit test for rule - [unit testing rules](https://prometheus.io/docs/prometheus/latest/configuration/unit_testing_rules/)
